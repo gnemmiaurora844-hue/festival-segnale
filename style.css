@@ -8,7 +8,7 @@
   --colore-sfondo: #f5f2e9;
   --colore-testo: #202923;
   --font-testo: Arial, Helvetica, sans-serif;
-  --font-titoli: Georgia, "Times New Roman", serif;
+ --font-titoli: "Fraunces", Georgia, serif;
 }
 
 * {
@@ -281,4 +281,35 @@ h3 {
   border: 0;
   border-radius: 0.75rem;
   margin-top: 1.5rem;
+}
+
+/* MENU RESPONSIVE */
+
+nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.25rem;
+}
+
+nav a {
+  margin-right: 0;
+}
+
+@media (min-width: 600px) {
+  nav {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+}
+
+/* INTESTAZIONE STICKY */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--colore-sfondo);
 }
