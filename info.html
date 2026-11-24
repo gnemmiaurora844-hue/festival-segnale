@@ -160,6 +160,29 @@
       </p>
     </section>
 
+<section class="content-section" aria-labelledby="titolo-meteo">
+  <h2 id="titolo-meteo">Meteo a Torino adesso</h2>
+
+  <p class="reading-text">
+    Scopri le condizioni meteorologiche attuali a Torino.
+    Questi dati si riferiscono a oggi e non alle date del festival.
+  </p>
+
+  <div class="meteo-box">
+    <p id="meteo-risultato" role="status">
+      Caricamento del meteo...
+    </p>
+  </div>
+
+  <p class="reading-text">
+    Dati meteo:
+    <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer">
+      Open-Meteo
+    </a>
+    — licenza CC BY 4.0.
+  </p>
+</section>
+
   </main>
 
   <footer class="site-footer">
@@ -191,6 +214,48 @@
       el: '.swiper-pagination',
     }
   });
+</script>
+
+<script>
+async function caricaMeteo() {
+  const risultato = document.getElementById("meteo-risultato");
+
+  const url = "https://api.open-meteo.com/v1/forecast?latitude=45.0703&longitude=7.6869&current=temperature_2m,wind_speed_10m&timezone=Europe%2FRome";
+
+  try {
+    const risposta = await fetch(url);
+
+    if (!risposta.ok) {
+      throw new Error("Errore nel caricamento del meteo");
+    }
+
+    const dati = await risposta.json();
+    const meteo = dati.current;
+
+    if (!meteo ||
+        meteo.temperature_2m == null ||
+        meteo.wind_speed_10m == null ||
+        !meteo.time) {
+      throw new Error("Dati meteo incompleti");
+    }
+
+    const temperatura = meteo.temperature_2m;
+    const vento = meteo.wind_speed_10m;
+    const orario = meteo.time.replace("T", " alle ");
+
+    risultato.textContent =
+      "Temperatura: " + temperatura + " °C" +
+      " | Vento: " + vento + " km/h" +
+      " | Rilevamento: " + orario;
+
+  } catch (errore) {
+    console.error(errore);
+    risultato.textContent =
+      "Meteo temporaneamente non disponibile.";
+  }
+}
+
+caricaMeteo();
 </script>
 
 </body>
